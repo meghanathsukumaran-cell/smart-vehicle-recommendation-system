@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>{{ car.name }} - Smart Vehicle</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#222}nav{background:#111827;color:white;padding:20px 8%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}nav a{color:white;text-decoration:none;margin-left:16px}.container{width:88%;max-width:1050px;margin:35px auto}.panel{background:white;padding:28px;border-radius:14px;box-shadow:0 5px 20px #00000010}.top{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.photo{height:270px;background:#eef2ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:80px;overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover}.price{color:#2563eb;font-size:27px;font-weight:bold;margin:12px 0}.muted{color:#666;line-height:1.6}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:18px}.item{background:#f5f7fa;padding:16px;border-radius:8px}.item strong{display:block;margin-bottom:7px}.section{margin-top:30px}.btn{display:inline-block;background:#2563eb;color:white;text-decoration:none;padding:12px 16px;border-radius:7px;margin:8px 8px 0 0}.dark{background:#111827}.note{padding:14px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;color:#7c2d12;margin-top:14px}footer{background:#111827;color:white;text-align:center;padding:22px;margin-top:40px}@media(max-width:650px){.top{grid-template-columns:1fr}.container{width:92%}
+</style></head>
+<body><nav><h2>🚗 Smart Vehicle</h2><div><a href="/">Home</a><a href="/requirements">Find Vehicle</a><a href="/compare">Compare</a><a href="/emi">EMI</a></div> <a href="/login">Login</a><a href="/register">Register</a>{% if logged_in_user %}<a href="/dashboard">Dashboard</a>{% if logged_in_user.role == "admin" %}<a href="/admin">Admin</a>{% endif %}<form method="post" action="/logout" style="display:inline"><button style="padding:7px 10px">Logout</button></form>{% endif %} </nav>
+<div class="container">{% if logged_in_user %}<form method="post" action="{{ url_for('toggle_favourite', vehicle_id=car.id) }}" style="margin:12px 0"><button type="submit">♥ Add / remove favourites</button></form>{% else %}<p><a href="{{ url_for('login', next=request.path) }}">Log in</a> to save this car to favourites.</p>{% endif %}<a href="/results" class="muted">← Back to recommendations</a><div class="panel" style="margin-top:18px">
+<div class="top"><div class="photo"><img src="{{ url_for('static',filename=car.image) }}" alt="{{ car.name }}" onerror="this.style.display='none';this.parentElement.innerHTML='🚗';"></div>
+<div><h1>{{ car.name }}</h1><div class="price">{{ car.price_label }}</div><p class="muted">{{ car.description }}</p><p style="margin-top:12px"><strong>Estimated value score:</strong> {{ car.value_score }}/100</p><p class="muted" style="font-size:13px">Illustrative score based on price, mileage and power; not an official rating.</p><a class="btn" href="/emi?price={{ (car.price * 100000)|int }}">Calculate EMI</a><a class="btn dark" href="/compare">Compare Vehicles</a></div></div>
+<div class="section"><h2>Vehicle Specifications</h2><div class="grid">
+<div class="item"><strong>Engine Capacity</strong>{{ car.cc }} CC</div><div class="item"><strong>Power</strong>{{ car.power }} HP</div><div class="item"><strong>Approx. Mileage</strong>{{ car.mileage }} km/l</div><div class="item"><strong>Fuel Type</strong>{{ car.fuel }}</div><div class="item"><strong>Transmission</strong>{{ car.transmission }}</div><div class="item"><strong>Seating Capacity</strong>{{ car.seats }} seats</div></div></div>
+<div class="section"><h2>Additional Specifications</h2><div class="grid">
+{% for label, key, suffix in [
+("Torque", "torque", ""),
+("Boot Space", "boot_space", " litres"),
+("Ground Clearance", "ground_clearance", " mm"),
+("Top Speed", "top_speed", " km/h"),
+("0–100 km/h", "acceleration", " seconds"),
+("Warranty", "warranty", ""),
+("Service Interval", "service_interval", ""),
+("Available Colours", "colours", "")
+] %}
+<div class="item"><strong>{{ label }}</strong>{% set value = car.get(key) %}{% if value %}{% if value is string or value is number %}{{ value }}{{ suffix }}{% elif value is sequence %}{{ value|join(", ") }}{% else %}{{ value }}{% endif %}{% else %}<span class="muted">Not listed in demo data</span>{% endif %}</div>
+{% endfor %}
+</div><p class="muted" style="font-size:13px">Specifications and colour availability can vary by model year and variant. Confirm details with the manufacturer or dealer.</p></div>
+<div class="section"><h2>🛡️ Safety Information</h2><div class="note">{{ car.safety_note }}</div><ul style="padding-left:22px;line-height:1.9;margin-top:12px">{% for feature in car.safety_features %}<li>{{ feature }}</li>{% endfor %}</ul><p class="muted" style="font-size:13px;margin-top:10px">Features vary by variant and model year. Verify against official specifications before purchase.</p></div>
+</div></div><footer>© 2026 Smart Vehicle | Vehicle Recommendation System</footer></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Selected Vehicles - Smart Vehicle</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#222}
+nav{background:#111827;color:white;padding:18px 6%;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;margin-left:15px}.container{width:92%;max-width:1150px;margin:32px auto}
+h1{text-align:center}.muted{text-align:center;color:#666;margin:12px 0 25px;line-height:1.5}
+.panel,.tablebox{background:white;border-radius:12px;padding:20px;margin:18px 0;box-shadow:0 4px 15px #0000000a}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.car-option{border:1px solid #e5e7eb;border-radius:10px;padding:14px;display:flex;gap:10px;align-items:flex-start}
+.car-option input{margin-top:4px}.car-option label{cursor:pointer;flex:1}
+.price{color:#2563eb;font-weight:bold;margin-top:6px}.btn,button{display:inline-block;margin-top:12px;padding:11px 16px;background:#111827;color:white;text-decoration:none;border:0;border-radius:6px;cursor:pointer}
+.primary{background:#2563eb}.tablebox{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{padding:13px;border-bottom:1px solid #ddd;text-align:center}th{background:#111827;color:white}td:first-child{font-weight:bold;text-align:left}
+.notice{padding:12px;background:#eff6ff;border-radius:8px;margin:12px 0}.empty{text-align:center;padding:24px;color:#555}
+footer{margin-top:40px;background:#111827;color:white;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<nav><h2>🚗 Smart Vehicle</h2><div><a href="/">Home</a><a href="/requirements">Find Vehicle</a><a href="/api-vehicles">API Vehicle Search</a><a href="/emi">EMI</a></div>
+<div><a href="/login">Login</a><a href="/register">Register</a>{% if logged_in_user %}<a href="/dashboard">Dashboard</a>{% if logged_in_user.role == "admin" %}<a href="/admin">Admin</a>{% endif %}<form method="post" action="/logout" style="display:inline"><button style="padding:7px 10px">Logout</button></form>{% endif %}</div></nav>
+<div class="container">
+<h1>Compare Selected Vehicles</h1>
+<p class="muted">Choose two to four vehicles to compare. If you arrived from a vehicle card, that vehicle is preselected.</p>
+<form method="get" action="{{ url_for('compare') }}" class="panel">
+<div class="grid">
+{% for car in all_vehicles %}
+<div class="car-option">
+<input type="checkbox" id="car-{{ car.id }}" name="ids" value="{{ car.id }}" {% if car.id in selected_ids %}checked{% endif %}>
+<label for="car-{{ car.id }}"><strong>{{ car.name }}</strong><div class="price">{{ car.price_label }}</div><div class="muted" style="text-align:left;margin:6px 0 0"> {{ car.cc }} cc · {{ car.mileage }} km/l · {{ car.fuel }}</div></label>
+</div>
+{% endfor %}
+</div>
+<button class="primary" type="submit">Compare Selected Cars</button>
+<a class="btn" href="{{ url_for('compare') }}">Clear Selection</a>
+</form>
+{% if vehicles %}
+<div class="notice">Showing comparison for {{ vehicles|length }} selected vehicle(s). Select at least two vehicles for a useful comparison.</div>
+<div class="tablebox"><table>
+<tr><th>Specification</th>{% for car in vehicles %}<th>{{ car.name }}<br>{{ car.price_label }}</th>{% endfor %}</tr>
+<tr><td>Engine</td>{% for car in vehicles %}<td>{{ car.cc }} CC</td>{% endfor %}</tr>
+<tr><td>Power</td>{% for car in vehicles %}<td>{{ car.power }} HP</td>{% endfor %}</tr>
+<tr><td>Approx. mileage</td>{% for car in vehicles %}<td>{{ car.mileage }} km/l</td>{% endfor %}</tr>
+<tr><td>Fuel</td>{% for car in vehicles %}<td>{{ car.fuel }}</td>{% endfor %}</tr>
+<tr><td>Transmission</td>{% for car in vehicles %}<td>{{ car.transmission }}</td>{% endfor %}</tr>
+<tr><td>Seats</td>{% for car in vehicles %}<td>{{ car.seats }}</td>{% endfor %}</tr>
+<tr><td>Demo value score</td>{% for car in vehicles %}<td>{{ car.value_score }}/100</td>{% endfor %}</tr>
+<tr><td>Torque</td>{% for car in vehicles %}<td>{{ car.get("torque") or "Not listed" }}</td>{% endfor %}</tr>
+<tr><td>Boot space</td>{% for car in vehicles %}<td>{% if car.get("boot_space") %}{{ car.get("boot_space") }} litres{% else %}Not listed{% endif %}</td>{% endfor %}</tr>
+<tr><td>Ground clearance</td>{% for car in vehicles %}<td>{% if car.get("ground_clearance") %}{{ car.get("ground_clearance") }} mm{% else %}Not listed{% endif %}</td>{% endfor %}</tr>
+<tr><td>Top speed</td>{% for car in vehicles %}<td>{% if car.get("top_speed") %}{{ car.get("top_speed") }} km/h{% else %}Not listed{% endif %}</td>{% endfor %}</tr>
+<tr><td>0–100 km/h</td>{% for car in vehicles %}<td>{% if car.get("acceleration") %}{{ car.get("acceleration") }} seconds{% else %}Not listed{% endif %}</td>{% endfor %}</tr>
+<tr><td>Warranty</td>{% for car in vehicles %}<td>{{ car.get("warranty") or "Not listed" }}</td>{% endfor %}</tr>
+<tr><td>Service interval</td>{% for car in vehicles %}<td>{{ car.get("service_interval") or "Not listed" }}</td>{% endfor %}</tr>
+<tr><td>Available colours</td>{% for car in vehicles %}<td>{% if car.get("colours") %}{{ car.get("colours")|join(", ") if car.get("colours") is sequence and car.get("colours") is not string else car.get("colours") }}{% else %}Not listed in demo data{% endif %}</td>{% endfor %}</tr>
+<tr><td>Safety rating</td>{% for car in vehicles %}<td>Verify model/variant</td>{% endfor %}</tr>
+</table></div>
+{% else %}
+<div class="panel empty">No vehicles selected yet. Choose cars above, then click <strong>Compare Selected Cars</strong>.</div>
+{% endif %}
+</div><footer>© 2026 Smart Vehicle | Vehicle Recommendation System</footer>
+<script>
+document.querySelector('form[action="{{ url_for("compare") }}"]').addEventListener('submit', function(e) {
+  const selected = this.querySelectorAll('input[name="ids"]:checked');
+  if (selected.length > 4) { e.preventDefault(); alert('Please select no more than four vehicles.'); }
+});
+</script>
+</body></html>

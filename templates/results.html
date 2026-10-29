@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommended Vehicles - Smart Vehicle</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+    color: #222;
+}
+
+nav {
+    background: #111827;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 18px;
+}
+
+.container {
+    width: 88%;
+    max-width: 1200px;
+    margin: 38px auto;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.heading h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.muted {
+    color: #666;
+    line-height: 1.5;
+}
+
+.vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 22px;
+}
+
+.vehicle-card {
+    background: white;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 5px 18px #00000010;
+}
+
+.car-image {
+    height: 180px;
+    background: #eef2ff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 17px;
+}
+
+.car-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;
+}
+
+.price {
+    font-size: 21px;
+    color: #2563eb;
+    font-weight: bold;
+    margin: 9px 0 15px;
+}
+
+.specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin: 14px 0;
+}
+
+.spec {
+    background: #f5f7fa;
+    padding: 9px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.pill {
+    padding: 10px;
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 7px;
+    text-align: center;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.value {
+    padding: 10px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 7px;
+    text-align: center;
+    font-size: 13px;
+    margin: 10px 0;
+}
+
+.buttons {
+    display: flex;
+    gap: 9px;
+    margin-top: 14px;
+}
+
+.button {
+    flex: 1;
+    padding: 11px;
+    border-radius: 7px;
+    text-decoration: none;
+    text-align: center;
+    background: #2563eb;
+    color: white;
+    font-size: 14px;
+}
+
+.dark {
+    background: #111827;
+}
+
+.notice {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    padding: 13px;
+    border-radius: 8px;
+    margin: 18px 0;
+    color: #7c2d12;
+}
+
+footer {
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 22px;
+    margin-top: 45px;
+}
+
+@media (max-width: 600px) {
+    nav {
+        padding: 18px 5%;
+    }
+
+    .container {
+        width: 92%;
+    }
+
+    .heading h1 {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>🚗 Smart Vehicle</h2>
+    <div>
+        <a href="/">Home</a>
+        <a href="/requirements">Find Vehicle</a>
+        <a href="/compare">Compare</a>
+        <a href="/emi">EMI</a>
+    </div>
+ <a href="/login">Login</a><a href="/register">Register</a>{% if logged_in_user %}<a href="/dashboard">Dashboard</a>{% if logged_in_user.role == "admin" %}<a href="/admin">Admin</a>{% endif %}<form method="post" action="/logout" style="display:inline"><button style="padding:7px 10px">Logout</button></form>{% endif %} </nav>
+
+<div class="container">
+
+    {% if preferences %}
+    <div class="notice">
+        <strong>Preferences received.</strong>
+        Match percentages are simple demo scores based on available sample data.
+        Safety is not scored because ratings have not yet been verified.
+    </div>
+    {% endif %}
+
+    <div class="heading">
+        <h1>Recommended Vehicles 🚗</h1>
+        <p class="muted">
+            Compare vehicle specifications, estimated value and preference match.
+        </p>
+    </div>
+
+    <div class="vehicle-grid">
+
+        {% if vehicles %}
+
+            {% for car in vehicles %}
+
+            <div class="vehicle-card">
+
+                <div class="car-image">
+                    <img
+                        src="{{ url_for('static', filename=car.image) if car.image else url_for('static', filename='images/car-placeholder.svg') }}"
+                        alt="{{ car.name }}"
+                        loading="lazy"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/car-placeholder.svg') }}';"
+                    >
+                </div>
+
+                <h2>{{ car.name }}</h2>
+
+                <div class="price">{{ car.price_label }}</div>
+
+                <div class="specs">
+                    <div class="spec">⚙️ {{ car.cc }} CC</div>
+                    <div class="spec">⚡ {{ car.power }} HP</div>
+                    <div class="spec">⛽ {{ car.mileage }} km/l</div>
+                    <div class="spec">👨‍👩‍👧 {{ car.seats }} seats</div>
+                    <div class="spec">🔥 {{ car.fuel }}</div>
+                    <div class="spec">⚙️ {{ car.transmission }}</div>
+                </div>
+
+                <div class="pill">
+                    {{ car.match }}% preference match
+                </div>
+
+                <div class="value">
+                    ⭐ Value score: {{ car.value_score }}/100
+                    <br>
+                    {{ car.value_label }}
+                </div>
+
+                <p class="muted" style="font-size:12px">
+                    Value score is an illustrative calculation using price,
+                    mileage and power—not an official rating.
+                </p>
+
+                <div class="buttons">
+                    <a href="{{ url_for('vehicle_details', vehicle=car.id) }}" class="button">
+                        View Details
+                    </a>
+                    {% if logged_in_user %}
+                    <form class="button-form" method="post" action="{{ url_for('toggle_favourite', vehicle_id=car.id) }}">
+                        <button class="button favourite" type="submit">♥ Favourite</button>
+                    </form>
+                    {% endif %}
+                    <a href="{{ url_for('compare', ids=car.id) }}" class="button compare">
+                        Compare
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        {% else %}
+
+            <div style="grid-column:1/-1;background:white;padding:30px;border-radius:12px;text-align:center">
+                <h2>No matching demo vehicles found</h2>
+
+                <p class="muted" style="margin:12px">
+                    No vehicles match the selected preferences in the current dataset.
+                    Try changing your requirements.
+                </p>
+
+                <a href="/requirements"
+                   class="button"
+                   style="display:inline-block;margin-top:15px">
+                    Change Preferences
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+<footer>
+    © 2026 Smart Vehicle | Vehicle Recommendation System
+</footer>
+
+</body>
+</html>

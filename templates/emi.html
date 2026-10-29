@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Salary-Based EMI Calculator</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#222}nav{background:#111827;color:white;padding:18px 7%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}nav a{color:white;text-decoration:none;margin-left:15px}.container{width:92%;max-width:720px;margin:35px auto}.box{background:white;padding:28px;border-radius:12px;box-shadow:0 4px 15px #00000010}h1{text-align:center;margin-bottom:10px}.sub{text-align:center;color:#666;margin-bottom:25px}label{display:block;font-weight:bold;margin:15px 0 7px}input{width:100%;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px}button{width:100%;padding:14px;margin-top:22px;background:#2563eb;color:white;border:0;border-radius:7px;font-size:16px;cursor:pointer}.result{display:none;margin-top:24px;padding:20px;border-radius:9px;background:#eff6ff}.amount{font-size:28px;font-weight:bold;color:#1d4ed8}.note{font-size:13px;color:#666;line-height:1.5;margin-top:15px}footer{background:#111827;color:white;text-align:center;padding:20px;margin-top:40px}
+</style></head>
+<body><nav><h2>🚗 Smart Vehicle</h2><div><a href="/">Home</a><a href="/requirements">Find Vehicle</a><a href="/compare">Compare</a></div> <a href="/login">Login</a><a href="/register">Register</a>{% if logged_in_user %}<a href="/dashboard">Dashboard</a>{% if logged_in_user.role == "admin" %}<a href="/admin">Admin</a>{% endif %}<form method="post" action="/logout" style="display:inline"><button style="padding:7px 10px">Logout</button></form>{% endif %} </nav>
+<div class="container"><div class="box"><h1>Salary-Based EMI Calculator</h1><p class="sub">Estimate monthly loan payments and compare them with your salary.</p>
+<label for="salary">Monthly Salary (₹)</label><input type="number" id="salary" min="0" value="50000">
+<label for="price">Vehicle Price (₹)</label><input type="number" id="price" min="1" value="1111000">
+<label for="downPayment">Down Payment (₹)</label><input type="number" id="downPayment" min="0" value="200000">
+<label for="interest">Interest Rate (% per year)</label><input type="number" id="interest" min="0" max="40" step="0.1" value="8.5">
+<label for="years">Loan Tenure (Years)</label><input type="number" id="years" min="1" max="10" value="5">
+<button onclick="calculateEMI()">Calculate EMI & Affordability</button>
+<div class="result" id="result"><h2>Estimated Monthly EMI</h2><p class="amount" id="emiAmount">₹0</p><p id="loanAmount"></p><p id="salaryShare"></p><h3 id="affordability" style="margin-top:12px"></h3><p id="advice" style="margin-top:8px"></p>
+<form method="post" action="/save-emi" id="saveEmiForm">
+<input type="hidden" name="salary" id="saveSalary"><input type="hidden" name="price" id="savePrice"><input type="hidden" name="down_payment" id="saveDown"><input type="hidden" name="interest" id="saveInterest"><input type="hidden" name="years" id="saveYears"><input type="hidden" name="vehicle_label" value="EMI calculator result">
+<button type="submit">Save this EMI calculation (login required)</button></form></div>
+<p class="note">Educational estimate only. The affordability indicator compares EMI with salary; it does not account for household expenses, other loans, insurance, fuel, maintenance or lender eligibility. Actual loan offers may differ.</p></div></div>
+<footer>© 2026 Smart Vehicle | Vehicle Recommendation System</footer>
+<script>
+const params = new URLSearchParams(window.location.search);
+if (params.has("price")) document.getElementById("price").value = params.get("price");
+function rupees(n){return "₹"+Math.round(n).toLocaleString("en-IN");}
+function calculateEMI(){
+ const salary=Number(document.getElementById("salary").value);
+ const price=Number(document.getElementById("price").value);
+ const down=Number(document.getElementById("downPayment").value);
+ const interest=Number(document.getElementById("interest").value);
+ const years=Number(document.getElementById("years").value);
+ if(salary<=0||price<=0||down<0||down>=price||interest<0||years<=0||years>10){
+  alert("Please enter valid values. Down payment must be less than vehicle price.");return;
+ }
+ const loan=price-down, months=years*12, r=interest/1200;
+ const emi=r===0?loan/months:loan*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);
+ const share=emi/salary*100;
+ document.getElementById("emiAmount").textContent=rupees(emi);
+ document.getElementById("loanAmount").textContent="Loan amount: "+rupees(loan);
+ document.getElementById("salaryShare").textContent="EMI is "+share.toFixed(1)+"% of monthly salary.";
+ let title, advice;
+ if(share<=20){title="Lower EMI-to-salary share";advice="This EMI is 20% or less of salary, but check your other expenses and obligations.";}
+ else if(share<=35){title="Moderate EMI-to-salary share";advice="Review your monthly budget, existing loans and running costs before deciding.";}
+ else{title="High EMI-to-salary share";advice="This payment may put pressure on your budget. Consider a lower-priced vehicle or larger down payment.";}
+ document.getElementById("affordability").textContent=title;
+ document.getElementById("advice").textContent=advice;
+ document.getElementById("result").style.display="block";
+ document.getElementById("saveSalary").value=salary;
+ document.getElementById("savePrice").value=price;
+ document.getElementById("saveDown").value=down;
+ document.getElementById("saveInterest").value=interest;
+ document.getElementById("saveYears").value=years;
+}
+</script></body></html>

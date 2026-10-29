@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartVehicle | Admin Dashboard</title>
+  <style>
+    :root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#172033;background:#f4f7fb}
+    *{box-sizing:border-box}body{margin:0}header{background:#111827;color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    header a{color:white;text-decoration:none;margin-left:14px}.wrap{max-width:1250px;margin:28px auto;padding:0 18px}
+    h1{margin:0;font-size:25px}h2{margin:0 0 16px;font-size:21px}.muted{color:#64748b;font-size:14px}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:20px 0}
+    .stat,.panel{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:18px;box-shadow:0 4px 15px #0f172a08}
+    .stat strong{display:block;font-size:30px;margin-top:6px}.panel{margin:18px 0;overflow:hidden}
+    .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px}
+    label{display:block;font-size:13px;font-weight:650;margin-bottom:5px}input,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;background:white}
+    button,.btn{border:0;border-radius:8px;padding:10px 13px;background:#2563eb;color:white;font-weight:650;cursor:pointer;text-decoration:none;display:inline-block}
+    .danger{background:#dc2626}.secondary{background:#475569}.success{background:#15803d}.table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;min-width:850px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e2e8f0;vertical-align:top}th{background:#f8fafc;font-size:13px}
+    .module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:22px 0}.module-card{display:block;color:inherit;text-decoration:none;background:white;border:1px solid #e2e8f0;border-radius:16px;padding:24px;box-shadow:0 4px 15px #0f172a08;transition:transform .15s,border-color .15s}.module-card:hover{transform:translateY(-2px);border-color:#93c5fd}.module-icon{width:48px;height:48px;border-radius:12px;background:#eff6ff;color:#1d4ed8;display:grid;place-items:center;font-size:25px;margin-bottom:14px}.module-card h2{margin:0 0 8px}.module-card p{color:#64748b;line-height:1.5}.module-meta{display:flex;justify-content:space-between;align-items:center;margin-top:18px;font-weight:700;color:#2563eb}.back-link{display:inline-block;margin:2px 0 16px;color:#2563eb;text-decoration:none;font-weight:650}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}.vehicle-edit{min-width:850px;display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:10px;padding:14px;background:#f8fafc;border-radius:10px;margin:8px 0 18px}
+    .vehicle-edit .wide{grid-column:span 2}.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.flash{padding:12px 14px;border-radius:8px;background:#e0f2fe;margin:8px 0}.error{background:#fee2e2}.success-msg{background:#dcfce7}
+    .status{font-weight:700}.active{color:#15803d}.inactive{color:#b91c1c}
+    @media(max-width:600px){.wrap{padding:0 12px;margin:18px auto}.panel{padding:13px}header{padding:18px}}
+  </style>
+</head>
+<body>
+<header>
+  <div><h1>SmartVehicle Admin</h1><div class="muted" style="color:#cbd5e1">Manage vehicles and user accounts</div></div>
+  <nav><a href="{{ url_for('home') }}">View website</a><a href="{{ url_for('dashboard') }}">My dashboard</a>
+    <form action="{{ url_for('logout') }}" method="post" style="display:inline"><button class="secondary" type="submit">Log out</button></form>
+  </nav>
+</header>
+<main class="wrap">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="flash {% if category == 'error' %}error{% elif category == 'success' %}success-msg{% endif %}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  {% set section = request.args.get('section', 'home') %}
+  {% if section == 'home' %}
+    <div class="section-title"><div><h2>Administration centre</h2><p class="muted">Choose what you want to manage. Each section has its own tools.</p></div></div>
+    <div class="stats">
+      <div class="stat"><span class="muted">Vehicles in catalogue</span><strong>{{ counts.vehicles }}</strong></div>
+      <div class="stat"><span class="muted">Registered user accounts</span><strong>{{ counts.users }}</strong></div>
+      <div class="stat"><span class="muted">Access</span><strong style="font-size:20px">Admin</strong><span class="muted">Administrator-only area</span></div>
+    </div>
+    <div class="module-grid">
+      <a class="module-card" href="{{ url_for('admin_dashboard', section='vehicles') }}">
+        <div class="module-icon">🚘</div><h2>Vehicles</h2>
+        <p>View your full vehicle catalogue, add new vehicles, edit specifications and update image paths or remove listings.</p>
+        <div class="module-meta"><span>{{ counts.vehicles }} vehicles</span><span>Manage vehicles →</span></div>
+      </a>
+      <a class="module-card" href="{{ url_for('admin_dashboard', section='users') }}">
+        <div class="module-icon">👥</div><h2>Users</h2>
+        <p>View registered accounts, check their status, and activate or deactivate regular user accounts.</p>
+        <div class="module-meta"><span>{{ counts.users }} users</span><span>Manage users →</span></div>
+      </a>
+    </div>
+  {% elif section == 'vehicles' %}
+    <a class="back-link" href="{{ url_for('admin_dashboard') }}">← Back to admin home</a>
+    <div class="section-title"><div><h2>Vehicle management</h2><p class="muted">Add a listing or edit existing vehicle information.</p></div><span class="muted">{{ counts.vehicles }} vehicles</span></div>
+  <section class="panel">
+    <h2>Add a vehicle</h2>
+    <p class="muted">Use a unique ID (for example, `venue-2026`).</p>
+    <form method="post" action="{{ url_for('admin_add_vehicle') }}">
+      <div class="form-grid">
+        <div><label for="new-id">Vehicle ID *</label><input id="new-id" name="id" required placeholder="venue-2026"></div>
+        <div><label for="new-name">Name *</label><input id="new-name" name="name" required placeholder="Hyundai Venue"></div>
+        <div><label for="new-price">Price (lakhs) *</label><input id="new-price" name="price" type="number" min="0.01" step="0.01" required></div>
+        <div><label for="new-label">Price label</label><input id="new-label" name="price_label" placeholder="₹7.9–13.5 lakh"></div>
+        <div><label for="new-fuel">Fuel</label><select id="new-fuel" name="fuel"><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select></div>
+        <div><label for="new-cc">Engine CC *</label><input id="new-cc" name="cc" type="number" min="1" required></div>
+        <div><label for="new-power">Power (HP) *</label><input id="new-power" name="power" type="number" min="0.1" step="0.1" required></div>
+        <div><label for="new-mileage">Mileage (km/l) *</label><input id="new-mileage" name="mileage" type="number" min="0.1" step="0.1" required></div>
+        <div><label for="new-seats">Seats</label><input id="new-seats" name="seats" type="number" min="1" value="5"></div>
+        <div><label for="new-transmission">Transmission</label><select id="new-transmission" name="transmission"><option>Manual</option><option>Automatic</option><option>AMT</option><option>CVT</option><option>DCT</option></select></div>
+        <div><label for="new-usage">Usage</label><select id="new-usage" name="usage"><option>City</option><option>Family</option><option>Highway</option><option>Off-road</option><option>Mixed</option></select></div>
+        <div><label for="new-image">Image path</label><input id="new-image" name="image" placeholder="static/images/car.jpg"></div>
+      </div>
+      <p><button type="submit">Add vehicle</button></p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Manage vehicles</h2>
+    <p class="muted">Edit fields and press Save changes. Vehicle IDs are kept unchanged so existing favourites and history are not disconnected.</p>
+    <div style="max-width:520px;margin:14px 0 18px">
+      <label for="vehicle-search">Find a vehicle</label>
+      <input id="vehicle-search" type="search" placeholder="Search by vehicle name, ID, or fuel type..." autocomplete="off" aria-describedby="vehicle-search-status">
+      <p class="muted" id="vehicle-search-status" aria-live="polite">Showing all vehicles.</p>
+    </div>
+    {% if vehicles %}
+      {% for car in vehicles %}
+        <div class="vehicle-item" data-vehicle-search="{{ (car.name ~ ' ' ~ car.id ~ ' ' ~ car.fuel)|lower|e }}" style="border-bottom:1px solid #e2e8f0;padding:12px 0">
+          <div class="actions" style="justify-content:space-between">
+            <div><strong>{{ car.name }}</strong><div class="muted">ID: {{ car.id }} · {{ car.fuel }} · {{ car.price_label if car.price_label else car.price|string ~ ' lakh' }}</div></div>
+            <form method="post" action="{{ url_for('admin_delete_vehicle', vehicle_id=car.id) }}" onsubmit="return confirm('Delete this vehicle? This also removes its saved favourites and recent-view entries.');">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </div>
+          <form class="vehicle-edit" method="post" action="{{ url_for('admin_edit_vehicle', vehicle_id=car.id) }}">
+            <div><label>Name</label><input name="name" value="{{ car.name }}" required></div>
+            <div><label>Price (lakhs)</label><input name="price" type="number" min="0.01" step="0.01" value="{{ car.price }}" required></div>
+            <div><label>Price label</label><input name="price_label" value="{{ car.price_label|default('', true) }}"></div>
+            <div><label>Fuel</label><input name="fuel" value="{{ car.fuel }}" required></div>
+            <div><label>Engine CC</label><input name="cc" type="number" min="1" value="{{ car.cc }}" required></div>
+            <div><label>Power (HP)</label><input name="power" type="number" min="0.1" step="0.1" value="{{ car.power }}" required></div>
+            <div><label>Mileage</label><input name="mileage" type="number" min="0.1" step="0.1" value="{{ car.mileage }}" required></div>
+            <div><label>Seats</label><input name="seats" type="number" min="1" value="{{ car.seats }}" required></div>
+            <div><label>Transmission</label><input name="transmission" value="{{ car.transmission }}" required></div>
+            <div><label>Usage</label><input name="usage" value="{{ car.usage }}" required></div>
+            <div class="wide"><label>Image path</label><input name="image" value="{{ car.image|default('', true) }}"></div>
+            <div style="align-self:end"><button class="success" type="submit">Save changes</button></div>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}<p>No vehicles found.</p>{% endif %}
+  </section>
+
+  {% elif section == 'users' %}
+    <a class="back-link" href="{{ url_for('admin_dashboard') }}">← Back to admin home</a>
+    <div class="section-title"><div><h2>User management</h2><p class="muted">Review accounts and manage access for regular users.</p></div><span class="muted">{{ counts.users }} users</span></div>
+  <section class="panel">
+    <h2>Manage users</h2>
+    <p class="muted">You can deactivate or reactivate regular user accounts. Admin accounts cannot be changed here.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Action</th></tr></thead>
+      <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.name }}</td><td>{{ user.email }}</td><td>{{ user.role }}</td>
+          <td class="status {% if user.active %}active{% else %}inactive{% endif %}">{{ 'Active' if user.active else 'Inactive' }}</td>
+          <td>{{ user.created_at }}</td>
+          <td>{% if user.role != 'admin' %}
+            <form method="post" action="{{ url_for('admin_toggle_user', user_id=user.id) }}" onsubmit="return confirm('Change this user account status?');">
+              <button class="{% if user.active %}danger{% else %}success{% endif %}" type="submit">{{ 'Deactivate' if user.active else 'Activate' }}</button>
+            </form>
+          {% else %}<span class="muted">Protected admin</span>{% endif %}</td>
+        </tr>
+      {% else %}<tr><td colspan="6">No registered users yet.</td></tr>{% endfor %}
+      </tbody>
+    </table></div>
+  </section>
+  {% endif %}
+  <p class="muted">Tip: make a backup of <code>vehicles.db</code> before doing bulk changes. This dashboard does not replace your database or image folder.</p>
+</main>
+<script>
+  // Client-side filtering only: does not modify vehicle data or backend routes.
+  (function () {
+    const search = document.getElementById('vehicle-search');
+    if (!search) return;
+    const items = Array.from(document.querySelectorAll('.vehicle-item'));
+    const status = document.getElementById('vehicle-search-status');
+    function filterVehicles() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      items.forEach(function (item) {
+        const match = !query || item.dataset.vehicleSearch.includes(query);
+        item.hidden = !match;
+        if (match) visible += 1;
+      });
+      status.textContent = query
+        ? 'Showing ' + visible + ' of ' + items.length + ' vehicles.'
+        : 'Showing all ' + items.length + ' vehicles.';
+    }
+    search.addEventListener('input', filterVehicles);
+  })();
+</script>
+</body>
+</html>

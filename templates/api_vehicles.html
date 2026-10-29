@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Demo Vehicle API - Smart Vehicle</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#222}
+nav{background:#111827;color:white;padding:18px 7%;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;margin-left:15px}.container{width:92%;max-width:1050px;margin:35px auto}
+.panel{background:white;border-radius:12px;padding:25px;box-shadow:0 4px 15px #00000010}
+h1{text-align:center;margin-bottom:10px}.muted{text-align:center;color:#666;line-height:1.5}
+form{display:flex;gap:10px;margin:25px 0}input{flex:1;min-width:0;padding:13px;border:1px solid #ccc;border-radius:7px;font-size:16px}
+button,.btn{padding:13px 18px;background:#2563eb;color:white;border:0;border-radius:7px;text-decoration:none;cursor:pointer}
+.status{padding:14px;border-radius:8px;margin:18px 0;background:#fff7ed;color:#7c2d12;border:1px solid #fed7aa}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.actions a,.actions button{flex:1;text-align:center;padding:10px 8px;font-size:13px;min-width:85px}
+.actions .favourite{background:#be123c}
+.actions .compare{background:#111827}
+.actions form{display:flex;flex:1;margin:0;min-width:85px}
+.actions form button{width:100%;border:0}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px;overflow-wrap:anywhere}
+.logo {display: block;width: 100%;height: 200px;object-fit: contain;background: #f8fafc;border-radius: 8px;margin-bottom: 15px;}
+.small{font-size:13px;color:#666;line-height:1.5}
+a.link{display:inline-block;margin-top:12px;color:#1d4ed8}
+footer{margin-top:40px;background:#111827;color:white;text-align:center;padding:20px}
+@media(max-width:520px){form{flex-direction:column}nav{padding:18px 5%}
+</style></head>
+<body>
+<nav><h2>🚗 Smart Vehicle</h2><div><a href="/">Home</a><a href="/requirements">Find Vehicle</a><a href="/compare">Compare</a><a href="/emi">EMI</a></div> <a href="/login">Login</a><a href="/register">Register</a>{% if logged_in_user %}<a href="/dashboard">Dashboard</a>{% if logged_in_user.role == "admin" %}<a href="/admin">Admin</a>{% endif %}<form method="post" action="/logout" style="display:inline"><button style="padding:7px 10px">Logout</button></form>{% endif %} </nav>
+<div class="container"><div class="panel">
+<form method="get" action="/api-vehicles"><input name="q" value="{{ query }}" placeholder="Try Thar, Creta, Nexon..." maxlength="80" required><button type="submit">Search Vehicles</button></form>
+{% if query and not vehicles %}<div class="status">No demo vehicles found for "{{ query }}". Try Creta, Nexon, Grand Vitara, Hyundai, Tata or Maruti.</div>{% endif %}
+{% if vehicles %}<p>Results for <strong>{{ query if query else "all demo vehicles" }}</strong>: {{ vehicles|length }} vehicle(s).</p><div class="grid">
+{% for car in vehicles %}
+<div class="card">
+{% if car.image %}<img class="logo" src="{{ url_for('static', filename=car.image.replace('images/', 'images/')) }}" alt="{{ car.name }}" onerror="this.style.display='none'">{% endif %}
+<h3>{{ car.name }}</h3>
+<p><strong>{{ car.price_label }}</strong></p>
+<p class="small">Engine: {{ car.cc }} cc · Mileage: {{ car.mileage }} km/l</p>
+<p class="small">Fuel: {{ car.fuel }} · Seats: {{ car.seats }} · {{ car.transmission }}</p>
+{% if car.official_url %}<a class="link" href="{{ car.official_url }}" target="_blank" rel="noopener noreferrer">Official manufacturer website ↗</a>{% endif %}
+<div class="actions">
+<a class="btn" href="{{ url_for('vehicle_details', vehicle=car.id) }}">Details</a>
+{% if logged_in_user %}
+<form method="post" action="{{ url_for('toggle_favourite', vehicle_id=car.id) }}"><button class="favourite" type="submit">♥ Favourite</button></form>
+{% endif %}
+<a class="btn compare" href="{{ url_for('compare', ids=car.id) }}">Compare</a>
+</div>
+</div>
+{% endfor %}</div>{% endif %}
+<p class="small" style="margin-top:18px">Demo note: this uses illustrative sample records in the project, not live manufacturer data. Verify price, mileage and specifications before presenting them as current facts.</p>
+</div></div><footer>© 2026 Smart Vehicle | Local JSON API demo</footer>
+</body></html>

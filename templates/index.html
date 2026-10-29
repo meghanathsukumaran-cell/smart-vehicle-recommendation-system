@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Vehicle</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        nav {
+            background: #111827;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            font-size: 24px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: white;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 35px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .features {
+            padding: 60px 8%;
+            text-align: center;
+        }
+
+        .features h2 {
+            margin-bottom: 35px;
+            font-size: 32px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 250px;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin: 15px 0;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h2> Smart Vehicle</h2>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="/api-vehicles">API Vehicle Search</a>
+            <a href="/compare">Compare</a>
+            <a href="/emi">EMI</a>
+        </div>
+     <a href="/login">Login</a><a href="/register">Register</a>{% if logged_in_user %}<a href="/dashboard">Dashboard</a>{% if logged_in_user.role == "admin" %}<a href="/admin">Admin</a>{% endif %}<form method="post" action="/logout" style="display:inline"><button style="padding:7px 10px">Logout</button></form>{% endif %} </nav>
+
+    <section class="hero">
+
+        <h1>Find Your Perfect Vehicle</h1>
+
+        <p>
+            Choose a vehicle based on your budget,
+            preferences and requirements.
+        </p>
+        
+        <a href="/requirements" class="button">
+            Find Your vehicle
+        </a>
+        <a href="/api-vehicles" class="button" style="margin-left:10px;background:#111827;">
+            Search Vehicle 
+        </a>
+        
+    </section>
+
+    <section class="features">
+
+        <h2>Why Smart Vehicle?</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div style="font-size:40px;">🚗</div>
+                <h3>Smart Recommendations</h3>
+                <p>
+                    Find vehicles that match your
+                    requirements and preferences.
+                </p>
+            </div>
+
+            <div class="card">
+                <div style="font-size:40px;">⚖️</div>
+                <h3>Compare Vehicles</h3>
+                <p>
+                    Compare important vehicle
+                    specifications in one place.
+                </p>
+            </div>
+
+            <div class="card">
+                <div style="font-size:40px;">💰</div>
+                <h3>EMI Calculator</h3>
+                <p>
+                    Calculate monthly EMI and
+                    understand vehicle affordability.
+                </p>
+            </div>
+
+            <div class="card">
+                <div style="font-size:40px;">🛡️</div>
+                <h3>Safety & Specifications</h3>
+                <p>
+                    View vehicle specifications,
+                    safety and other important details.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+        <p>© 2026 Smart Vehicle | Vehicle Recommendation System</p>
+    </footer>
+
+</body>
+</html>

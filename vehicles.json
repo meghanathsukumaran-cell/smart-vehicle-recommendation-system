@@ -1,0 +1,387 @@
+[
+  {
+    "id": "creta",
+    "name": "Hyundai Creta",
+    "price": 11.11,
+    "price_label": "Approx. ₹11.11 lakh",
+    "cc": 1497,
+    "power": 115,
+    "mileage": 17.0,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Automatic",
+    "safety_rating": null,
+    "safety_note": "Verify the exact model year and variant; this demo does not confirm a safety rating.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS",
+      "Parking assistance (variant-dependent)"
+    ],
+    "image": "images/creta.jpg",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Compact SUV for daily driving and family use."
+  },
+  {
+    "id": "nexon",
+    "name": "Tata Nexon",
+    "price": 8.15,
+    "price_label": "Approx. ₹8.15 lakh",
+    "cc": 1199,
+    "power": 120,
+    "mileage": 17.4,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify the exact model year and variant; this demo does not confirm a safety rating.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS",
+      "Parking assistance (variant-dependent)"
+    ],
+    "image": "images/nexon.webp",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Compact SUV option in a lower price range."
+  },
+  {
+    "id": "grand-vitara",
+    "name": "Maruti Suzuki Grand Vitara",
+    "price": 10.77,
+    "price_label": "Approx. ₹10.77 lakh",
+    "cc": 1462,
+    "power": 103,
+    "mileage": 19.38,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Automatic",
+    "safety_rating": null,
+    "safety_note": "Verify the exact model year and variant; this demo does not confirm a safety rating.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS",
+      "Parking assistance (variant-dependent)"
+    ],
+    "image": "images/grand-vitara.avif",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Compact SUV for everyday family use."
+  },
+  {
+    "id": "swift",
+    "name": "Maruti Suzuki Swift",
+    "price": 6.49,
+    "price_label": "Approx. ₹6.49 lakh",
+    "cc": 1197,
+    "power": 82,
+    "mileage": 24.8,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/maruti suzuki swift.png",
+    "usage": [
+      "city",
+      "mixed"
+    ],
+    "description": "Small hatchback suited to city driving."
+  },
+  {
+    "id": "baleno",
+    "name": "Maruti Suzuki Baleno",
+    "price": 6.7,
+    "price_label": "Approx. ₹6.70 lakh",
+    "cc": 1197,
+    "power": 89,
+    "mileage": 22.35,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/baleno.jpeg",
+    "usage": [
+      "city",
+      "mixed",
+      "family"
+    ],
+    "description": "Hatchback with a roomy cabin for its class."
+  },
+  {
+    "id": "wagonr",
+    "name": "Maruti Suzuki Wagon R",
+    "price": 5.54,
+    "price_label": "Approx. ₹5.54 lakh",
+    "cc": 998,
+    "power": 67,
+    "mileage": 24.35,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/wagon r.jpeg",
+    "usage": [
+      "city",
+      "mixed"
+    ],
+    "description": "Practical hatchback for everyday city use."
+  },
+  {
+    "id": "punch",
+    "name": "Tata Punch",
+    "price": 6.13,
+    "price_label": "Approx. ₹6.13 lakh",
+    "cc": 1199,
+    "power": 87,
+    "mileage": 20.09,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/punch.png",
+    "usage": [
+      "city",
+      "family",
+      "mixed"
+    ],
+    "description": "Small SUV-style car for city and family use."
+  },
+  {
+    "id": "brezza",
+    "name": "Maruti Suzuki Brezza",
+    "price": 8.69,
+    "price_label": "Approx. ₹8.69 lakh",
+    "cc": 1462,
+    "power": 101,
+    "mileage": 17.8,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/brezza.jpeg",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Compact SUV for daily use and family trips."
+  },
+  {
+    "id": "fronx",
+    "name": "Maruti Suzuki Fronx",
+    "price": 7.52,
+    "price_label": "Approx. ₹7.52 lakh",
+    "cc": 1197,
+    "power": 89,
+    "mileage": 21.79,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/fronx.jpg",
+    "usage": [
+      "city",
+      "highway",
+      "mixed"
+    ],
+    "description": "Compact crossover for city and highway driving."
+  },
+  {
+    "id": "venue",
+    "name": "Hyundai Venue",
+    "price": 7.94,
+    "price_label": "Approx. ₹7.94 lakh",
+    "cc": 1197,
+    "power": 83,
+    "mileage": 18.5,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/venue.jpeg",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Compact SUV with city-friendly dimensions."
+  },
+  {
+    "id": "sonet",
+    "name": "Kia Sonet",
+    "price": 8.0,
+    "price_label": "Approx. ₹8.00 lakh",
+    "cc": 1197,
+    "power": 82,
+    "mileage": 18.4,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/sonet.jpeg",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Compact SUV option with several variant choices."
+  },
+  {
+    "id": "ertiga",
+    "name": "Maruti Suzuki Ertiga",
+    "price": 8.84,
+    "price_label": "Approx. ₹8.84 lakh",
+    "cc": 1462,
+    "power": 103,
+    "mileage": 20.3,
+    "seats": 7,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/ertiga.jpeg",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Seven-seat MPV for larger families."
+  },
+  {
+    "id": "innova-hycross",
+    "name": "Toyota Innova Hycross",
+    "price": 19.94,
+    "price_label": "Approx. ₹19.94 lakh",
+    "cc": 1987,
+    "power": 184,
+    "mileage": 16.0,
+    "seats": 7,
+    "fuel": "Hybrid",
+    "transmission": "Automatic",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS",
+      "Driver assistance (variant-dependent)"
+    ],
+    "image": "images/innova hycross.jpeg",
+    "usage": [
+      "city",
+      "highway",
+      "family",
+      "mixed"
+    ],
+    "description": "Larger family MPV; variant specifications differ."
+  },
+  {
+    "id": "altroz",
+    "name": "Tata Altroz",
+    "price": 6.65,
+    "price_label": "Approx. ₹6.65 lakh",
+    "cc": 1199,
+    "power": 88,
+    "mileage": 19.3,
+    "seats": 5,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/altroz.jpeg",
+    "usage": [
+      "city",
+      "highway",
+      "mixed"
+    ],
+    "description": "Hatchback suited to everyday use."
+  },
+  {
+    "id": "thar",
+    "name": "Mahindra Thar",
+    "price": 11.5,
+    "price_label": "Approx. ₹11.50 lakh",
+    "cc": 1997,
+    "power": 150,
+    "mileage": 13.0,
+    "seats": 4,
+    "fuel": "Petrol",
+    "transmission": "Manual",
+    "safety_rating": null,
+    "safety_note": "Verify safety information for the exact model year and variant.",
+    "safety_features": [
+      "Airbags (variant-dependent)",
+      "ABS"
+    ],
+    "image": "images/thar.jpg",
+    "usage": [
+      "highway",
+      "offroad",
+      "mixed"
+    ],
+    "description": "Lifestyle SUV intended for road and off-road use."
+  }
+]
